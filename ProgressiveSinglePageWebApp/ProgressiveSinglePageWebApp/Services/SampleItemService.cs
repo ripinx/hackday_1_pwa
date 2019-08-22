@@ -1,51 +1,67 @@
 ﻿namespace ProgressiveSinglePageWebApp.Services
 {
+    using Microsoft.EntityFrameworkCore;
+    using ProgressiveSinglePageWebApp.DataAccess;
     using ProgressiveSinglePageWebApp.DataAccess.Models;
-    using ProgressiveSinglePageWebApp.DataAccess.Repositories;
     using System;
     using System.Linq;
 
     public class SampleItemService
     {
-        SampleItemRepository repository = new SampleItemRepository();
+        PWADbContext context = new PWADbContext();
 
         public SampleItem Get(int id)
         {
-            return repository.Get(id);
+            return context.SampleItems.Find(id);
         }
 
         public IQueryable<SampleItem> GetAll()
         {
-            return repository.GetAll();
+            return context.SampleItems.AsQueryable();
         }
 
-        public SampleItem Create(SampleItem item)
+        public SampleItem Create(SampleItem item, string username)
         {
-            SetUsername(item);
-            return repository.Create(item);
+            SetUsername(item, username);
+            context.Set<SampleItem>().Add(item);
+            context.SaveChanges();
+
+            return item;
         }
 
-        public SampleItem Update(SampleItem item)
+        public SampleItem Update(SampleItem item, string username)
         {
-            SetUsername(item);
-            return repository.Update(item);
+            SetUsername(item, username);
+
+            context.Entry(item).State = EntityState.Modified;
+            context.SaveChanges();
+
+            return item;
         }
 
-        public bool Delete(int id)
+        public bool Delete(SampleItem item)
         {
-            return repository.Delete(id);
+            context.Set<SampleItem>().Remove(item);
+
+            return true;
         }
 
-        private void SetUsername(SampleItem item)
+        private void HandleConcurrencyException(Action action)
         {
-            item.ChangedBy = GetUsername();
+            try
+            {
+                action();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                // do stuff
+            }
+        }
+
+        private void SetUsername(SampleItem item, string username)
+        {
+            item.ChangedBy = username;
             item.ChangedOn = DateTimeOffset.Now;
-        }
-
-        private string GetUsername()
-        {
-            // send username with each request
-            return "Me";
         }
     }
 }
