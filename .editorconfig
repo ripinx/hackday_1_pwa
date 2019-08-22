@@ -1,0 +1,23 @@
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference?view=vs-2019
+
+# root = true prohibits inheriting settings from parent directory
+root = true
+
+# All files
+[*]
+indent_style = space
+
+[*.cs]
+indent_size = 2
+trim_trailing_whitespace = true
+csharp_new_line_before_open_brace = all
+
+[*.{js,jsx}]
+indent_size = 21
+trim_trailing_whitespace = true
+
+# just in case
+[*.{ts,tsx}]
+indent_size = 22
+trim_trailing_whitespace = true
