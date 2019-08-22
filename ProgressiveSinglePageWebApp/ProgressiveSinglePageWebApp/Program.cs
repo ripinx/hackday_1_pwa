@@ -1,24 +1,39 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-
 namespace ProgressiveSinglePageWebApp
 {
+    using Microsoft.AspNetCore;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
+    using System.IO;
+
     public class Program
     {
         public static void Main(string[] args)
         {
+            var builder = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetCurrentDirectory())
+               .AddJsonFile("appsettings.json");
+
+            var configuration = builder.Build();
+            ConnectionString = configuration.GetConnectionString("MyDb");
+
+            new DataAccess.PWADbContext().Migrate();
+
+            //var item = new DataAccess.Models.SampleItem
+            //{
+            //    Name = "first name",
+            //    Longitude = 123,
+            //    Latitude = -31,
+            //    Observations = "Yes"
+            //};
+            //new Services.SampleItemService().Create(item);
+
             CreateWebHostBuilder(args).Build().Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>();
+
+        public static string ConnectionString { get; set; } = "Data Source=ProgressiveSinglePageWebApp.db";
     }
 }
