@@ -8,15 +8,12 @@ class Navigation extends React.Component {
   static contextType = StateContext;
 
   componentDidMount() {
-    console.log("mounted..");
   }
 
   componentDidUpdate(){
-    console.log("updated..");
   }
 
   render() {
-
     const [{ user }, dispatch] = this.context;
     const logoutText = "Logout " + user["username"];
     const isSampleHome = window.location.pathname === "/samples-home";
@@ -35,4 +32,4 @@ class Navigation extends React.Component {
   }
   }
   
-  export default Navigation;
+export default Navigation;

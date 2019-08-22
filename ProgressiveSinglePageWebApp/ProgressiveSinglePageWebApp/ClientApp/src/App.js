@@ -8,17 +8,25 @@ import Navigation from './Navigation';
 
 const initialState = {
   user: { username: '' },
-  data: { samples: [{name: "Item 1"}, {name: "Item 2"}] }
+  data: { 
+    samples: [],
+    updates: []
+  }
 };
 
 const reducer = (state, action) => {
+  console.log(state, action)
   switch (action.type) {
     case 'changeUser':
-      return {
-        ...state,
-        user: action.newUser
-      };
-      
+        return {
+          ...state,
+          user: action.payload
+        };
+    case 'getAll':
+        return {
+          ...state,
+          data: { samples: action.payload }
+        };
     default:
       return state;
   }
@@ -27,7 +35,6 @@ const reducer = (state, action) => {
 class App extends React.PureComponent {
 
   render() {
-
     return (
       <StateProvider initialState={initialState} reducer={reducer}>
         <div className="App">

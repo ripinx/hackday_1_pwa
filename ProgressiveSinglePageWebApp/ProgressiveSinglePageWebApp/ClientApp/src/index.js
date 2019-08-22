@@ -18,9 +18,9 @@ const history = createBrowserHistory({ basename: baseUrl });
 var render = () => {
     return (<Router basename={baseUrl} history={history}>
     <App>
-        <Route exact path="/" render={(props) => <Logon history={history}/>} />
+        <Route exact path="/" render={props => <Logon history={history}/>} />
         <Route exact path="/samples-home" component={SamplesHome} />
-        <Route exact path="/samples-details" component={SampleDetails} />
+        <Route path="/samples-details/:id" component={SampleDetails} />
     </App>
 </Router>)
 }
