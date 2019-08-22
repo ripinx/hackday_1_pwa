@@ -8,7 +8,7 @@ import Navigation from './Navigation';
 import { SampleService } from './SampleService';
 
 
-const initialState = {
+export const ApplicationState = {
   user: { username: '' },
   data: { 
     samples: []
@@ -41,6 +41,8 @@ const reducer = (state, action) => {
           ...state,
           online: { online: action.payload }
         };
+    case 'sync':
+      
     default:
       return state;
   }
@@ -50,7 +52,7 @@ class App extends React.PureComponent {
 
   render() {
     return (
-      <StateProvider initialState={initialState} reducer={reducer}>
+      <StateProvider initialState={ApplicationState} reducer={reducer}>
         <div className="App">
           <Navigation/>
           <div id="content" className="content" style={{width: "100%"}}>

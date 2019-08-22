@@ -2,6 +2,7 @@ import React from 'react';
 import { Navbar, NavbarBrand, Label } from 'reactstrap';
 import { InputGroup, Input, Button } from 'reactstrap';
 import { StateContext } from './state';
+import { SampleService } from './SampleService'
 
 class Navigation extends React.Component {
 
@@ -39,13 +40,21 @@ class Navigation extends React.Component {
         <Navbar color="light" light expand="md">
             <NavbarBrand href="/">Inviron PWA</NavbarBrand>
             { isSampleHome &&  <div style={{textAlign: "right", width: "100%"}}>
-            <Button color="secondary" disabled={disabled} color={color}>Sync</Button>{' '}
+            <Button color="secondary" disabled={disabled} color={color}
+              onClick={() => 
+                SampleService.sync()
+                .then(() =>
+                 dispatch({
+                    action: 'sync',
+                    payload: null
+                  }))}
+              >Sync</Button>{' '}
             <Button color="secondary" onClick={()=>{ window.location.pathname = "/"; }}>{logoutText}</Button>{' '}
             </div>}
         </Navbar>
       </div>
     );
   }
-  }
+}
   
 export default Navigation;

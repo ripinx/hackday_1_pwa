@@ -120,8 +120,10 @@ class SampleDetail extends React.Component {
   }
 
   submit = (e) => {
-    SampleService.save(this.state)
-    .then(() => this.props.history.push("/samples-home"))
+    const [{ }, dispatch] = this.context;
+    SampleService.save(this.state, dispatch)
+    //.then(() => 
+    this.props.history.push("/samples-home")//)
   }
 }
 
