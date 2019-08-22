@@ -15,7 +15,23 @@ class SampleDetail extends React.Component {
         observations: ''
     }
   }
-  static contextType = StateContext;
+    static contextType = StateContext;
+    setLocation = (lat, long) => {
+        this.setState({ latitude: lat, longitude: long });
+    }
+
+    getLocation = () => {
+        if ("geolocation" in navigator) {
+
+            const setLocation = this.setLocation;
+
+            navigator.geolocation.getCurrentPosition(function (position) {
+                setLocation(position.coords.latitude, position.coords.longitude);
+            });
+        } else {
+            alert("Sorry, geolocation is not available in your browser.");
+        }
+    }
 
   componentDidMount() {    
     const [{ data }] = this.context;
@@ -71,7 +87,10 @@ class SampleDetail extends React.Component {
               console.log(item)
 
               this.setState(item)
-            }}/>
+                        }} />
+                    <Button style={{ marginTop: "5px" }} color="primary"
+            onClick={this.getLocation}>
+            Use Current Location</Button>
           </FormGroup>
           <FormGroup>
             <Label for="sampleWeather">Weather</Label>
