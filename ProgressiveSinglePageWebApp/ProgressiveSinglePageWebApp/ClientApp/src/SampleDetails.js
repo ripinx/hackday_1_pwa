@@ -12,20 +12,31 @@ function SampleDetail() {
           <Input type="text" name="sampleName" id="sampleName"/>
         </FormGroup>
         <FormGroup>
-          <Label for="exampleText">Sample Description</Label>
-          <Input type="textarea" name="text" id="exampleText" />
+          <Label for="sampleLatitude">Latitude</Label>
+          <Input type="text" name="sampleLatitude" id="sampleLatitude"/>
         </FormGroup>
         <FormGroup>
+          <Label for="sampleLongitude">Longitude</Label>
+          <Input type="text" name="sampleLongitude" id="sampleLongitude"/>
+        </FormGroup>
         <FormGroup>
-          <Label for="exampleSelect">Select</Label>
-          <Input type="select" name="select" id="exampleSelect">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
+          <Label for="sampleWeather">Weather</Label>
+          <Input type="select" name="sampleWeather" id="sampleWeather">
+            <option>Clear day</option>
+            <option>Cloudy day</option>
+            <option>Snow day</option>
+            <option>Rainy day</option>
           </Input>
         </FormGroup>
+        <FormGroup>
+          <Label for="sampleTemp">Temperature</Label>
+          <Input type="number" name="sampleTemp" id="sampleTemp"/>
+        </FormGroup>
+        <FormGroup>
+          <Label for="sampleObservation">Observations</Label>
+          <Input type="textarea" name="sampleObservation" id="sampleObservation" />
+        </FormGroup>
+        <FormGroup>
         </FormGroup>
         <Button onClick={()=> { window.location.pathname = "/samples-home" }}>Submit</Button>
       </Form>
