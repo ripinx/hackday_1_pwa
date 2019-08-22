@@ -1,20 +1,44 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router';
-import { Layout } from './components/Layout';
-import { Home } from './components/Home';
-import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter';
+import React from 'react';
+import { StateProvider } from './state';
 
-export default class App extends Component {
-  static displayName = App.name;
+import logo from './logo.svg';
+import './App.css';
+import SamplesHome from './SamplesHome';
+import Navigation from './Navigation';
 
-  render () {
+const initialState = {
+  user: { username: '' }
+};
+
+const reducer = (state, action) => {
+  console.log(action, state);
+  switch (action.type) {
+    case 'changeUser':
+      return {
+        ...state,
+        user: action.newUser
+      };
+      
+    default:
+      return state;
+  }
+};
+
+class App extends React.PureComponent {
+
+  render() {
+
     return (
-      <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path='/counter' component={Counter} />
-        <Route path='/fetch-data' component={FetchData} />
-      </Layout>
+      <StateProvider initialState={initialState} reducer={reducer}>
+        <div className="App">
+          <Navigation/>
+          <div id="content" className="content" style={{width: "100%"}}>
+            {this.props.children}
+          </div>
+        </div>
+      </StateProvider>
     );
   }
 }
+
+export default App;
