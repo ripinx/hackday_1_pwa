@@ -18,14 +18,14 @@ namespace ProgressiveSinglePageWebApp
 
             new DataAccess.PWADbContext().Migrate();
 
-            var item = new DataAccess.Models.SampleItem
-            {
-                Longitude = 123,
-                MyIntProperty = 321,
-                Latitude = -31,
-                Observations = "Yes"
-            };
-            new Services.SampleItemService().Create(item);
+            //var item = new DataAccess.Models.SampleItem
+            //{
+            //    Name = "first name",
+            //    Longitude = 123,
+            //    Latitude = -31,
+            //    Observations = "Yes"
+            //};
+            //new Services.SampleItemService().Create(item);
 
             CreateWebHostBuilder(args).Build().Run();
         }

@@ -29,11 +29,19 @@ namespace ProgressiveSinglePageWebApp.DataAccess.Migrations
 
                     b.Property<double>("Longitude");
 
-                    b.Property<int>("MyIntProperty");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.Property<string>("Observations");
 
-                    b.Property<long>("VersionNumber");
+                    b.Property<double>("Temperature");
+
+                    b.Property<string>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<int>("Weather");
 
                     b.HasKey("Id");
 

@@ -15,11 +15,13 @@ namespace ProgressiveSinglePageWebApp.DataAccess.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     ChangedOn = table.Column<DateTimeOffset>(nullable: false),
                     ChangedBy = table.Column<string>(nullable: true),
-                    VersionNumber = table.Column<long>(nullable: false),
+                    Version = table.Column<string>(rowVersion: true, nullable: true, defaultValueSql: "CURRENT_TIMESTAMP"),
                     Longitude = table.Column<double>(nullable: false),
                     Latitude = table.Column<double>(nullable: false),
+                    Temperature = table.Column<double>(nullable: false),
                     Observations = table.Column<string>(nullable: true),
-                    MyIntProperty = table.Column<int>(nullable: false)
+                    Weather = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
