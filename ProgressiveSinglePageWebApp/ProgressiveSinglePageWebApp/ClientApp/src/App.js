@@ -7,11 +7,11 @@ import SamplesHome from './SamplesHome';
 import Navigation from './Navigation';
 
 const initialState = {
-  user: { username: '' }
+  user: { username: '' },
+  data: { samples: [{name: "Item 1"}, {name: "Item 2"}] }
 };
 
 const reducer = (state, action) => {
-  console.log(action, state);
   switch (action.type) {
     case 'changeUser':
       return {

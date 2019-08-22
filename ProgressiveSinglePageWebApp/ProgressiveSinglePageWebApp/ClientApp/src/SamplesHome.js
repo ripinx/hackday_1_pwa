@@ -1,7 +1,23 @@
 import React from 'react';
 import { ListGroup, ListGroupItem, Badge, InputGroup, Input, Button } from 'reactstrap';
+import { StateContext } from './state';
 
-function SamplesHome() {
+class SamplesHome extends React.Component {
+  static contextType = StateContext;
+
+  listView = () => {
+
+    const [{ data }, dispatch] = this.context;
+
+    const items = data.samples;
+    return (
+      <ListGroup style={{textAlign: "left"}}>
+        {items.map((item, index) => <ListGroupItem>{item.name}</ListGroupItem> ) }
+      </ListGroup>
+    )
+  }
+
+  render() {
     return (
       <div className="Samples">
         <div className="row" style={{padding: "20px"}}>
@@ -12,13 +28,10 @@ function SamplesHome() {
               <Input placeholder="Search"/>
           </div>
         </div> 
-        <ListGroup style={{textAlign: "left"}}>
-          <ListGroupItem>Cras justo odio <Badge pill>14</Badge></ListGroupItem>
-          <ListGroupItem>Dapibus ac facilisis in <Badge pill>2</Badge></ListGroupItem>
-          <ListGroupItem>Morbi leo risus <Badge pill>1</Badge></ListGroupItem>
-        </ListGroup>
+        {this.listView()}
       </div>
     );
+    }
   }
   
   export default SamplesHome;
