@@ -1,28 +1,42 @@
-const rootUrl = `${window.location.protocol}//${window.location.host}/api`;
+const rootUrl = `${window.location.protocol}//${window.location.host}/api/sampleitem`;
+const contentType = 'application/json'
 
-export class SampleService {
-    add = (item) => {
-        console.log('sampleservice add')
+export class SampleService {    
+    // we'll use ids inside here as well, but prepend '$' to show that they're client-only
+    static save = (item) => {
+        if (String(item.id)[0] == '$') {
+            console.log('sampleservice create')
+
+            return fetch(rootUrl, {
+                method: 'post',
+                headers: { 'Content-Type': contentType },
+                body: JSON.stringify(item)
+            })
+        } else {
+            console.log('sampleservice update')
+
+            return fetch(rootUrl + '/' + item.id, {
+                method: 'put',
+                headers: { 'Content-Type': contentType },
+                body: JSON.stringify(item)
+            })
+        }        
     }
 
-    update = (item) => {
-        console.log('sampleservice update')
-    }
-
-    delete = (item) => {
+    static delete = (item) => {
         console.log('sampleservice delete')
     }
 
-    sync = () => {
+    static sync = () => {
         console.log('sampleservice sync')
     }
 
-    getAll = (user1) => {
-        var url = `${rootUrl}/sampleitem/`
+    static getAll = (user1) => {
+        var url = `${rootUrl}`
         return fetch(url).then(response => response.json())
     }
 
-    getById = id => {
-        
+    static getById = id => {
+
     }
 }

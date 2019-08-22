@@ -5,7 +5,6 @@ import { SampleService } from './SampleService';
 
 class SamplesHome extends React.Component {
   static contextType = StateContext;
-  service = new SampleService();
 
   listView = () => {
     const [{ data }, dispatch] = this.context;
@@ -27,7 +26,7 @@ class SamplesHome extends React.Component {
 
   componentDidMount() {
     const [{ data }, dispatch] = this.context;
-    this.service.getAll(data)
+    SampleService.getAll(data)
     .then(function(json) {
       dispatch({ type: 'getAll', payload: json })
     });

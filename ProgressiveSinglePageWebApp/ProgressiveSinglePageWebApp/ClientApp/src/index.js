@@ -19,8 +19,8 @@ var render = () => {
     return (<Router basename={baseUrl} history={history}>
     <App>
         <Route exact path="/" render={props => <Logon history={history}/>} />
-        <Route exact path="/samples-home" component={SamplesHome} />
-        <Route path="/samples-details/:id" component={SampleDetails} />
+        <Route exact path="/samples-home" component={SamplesHome} history={history} />
+        <Route path="/samples-details/:id" component={SampleDetails} history={history} />
     </App>
 </Router>)
 }

@@ -7,6 +7,20 @@ class Navigation extends React.Component {
 
   static contextType = StateContext;
 
+  constructor(props) {
+    super(props);
+    window.addEventListener('online',  this.updateOnlineStatus);
+    window.addEventListener('offline', this.updateOnlineStatus);
+  }
+  
+  updateOnlineStatus = event => {
+    const [{ user }, dispatch] = this.context;
+    dispatch({
+      type: 'online',
+      payload: event.type == 'online'
+    });
+  }  
+
   componentDidMount() {
   }
 
@@ -14,16 +28,18 @@ class Navigation extends React.Component {
   }
 
   render() {
-    const [{ user }, dispatch] = this.context;
-    const logoutText = "Logout " + user["username"];
+    const [{ user, online, updates }, dispatch] = this.context;
+    const logoutText = `Logout ${user["username"]}`;
     const isSampleHome = window.location.pathname === "/samples-home";
+    const disabled = !online.online;
+    const color = updates.length ? 'warning' : 'success';
 
     return (
       <div>
         <Navbar color="light" light expand="md">
             <NavbarBrand href="/">Inviron PWA</NavbarBrand>
             { isSampleHome &&  <div style={{textAlign: "right", width: "100%"}}>
-            <Button color="secondary">Sync</Button>{' '}
+            <Button color="secondary" disabled={disabled} color={color}>Sync</Button>{' '}
             <Button color="secondary" onClick={()=>{ window.location.pathname = "/"; }}>{logoutText}</Button>{' '}
             </div>}
         </Navbar>

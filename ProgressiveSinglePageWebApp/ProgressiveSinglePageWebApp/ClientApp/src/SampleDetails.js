@@ -3,50 +3,48 @@ import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
 import SamplesHome from './SamplesHome';
 import { StateContext } from './state';
+import { SampleService } from './SampleService';
 
 class SampleDetail extends React.Component {
+  static contextType = StateContext;
+
   constructor(props) {
     super(props)
     this.state = {
-        name: '',
-        latitude: 0,
-        longitude: 0,
-        temperature: 0,
-        observations: ''
+      name: '',
+      latitude: 0,
+      longitude: 0,
+      temperature: 0,
+      observations: ''
     }
   }
-    static contextType = StateContext;
-    setLocation = (lat, long) => {
-        this.setState({ latitude: lat, longitude: long });
-    }
-
-    getLocation = () => {
-        if ("geolocation" in navigator) {
-
-            const setLocation = this.setLocation;
-
-            navigator.geolocation.getCurrentPosition(function (position) {
-                setLocation(position.coords.latitude, position.coords.longitude);
-            });
-        } else {
-            alert("Sorry, geolocation is not available in your browser.");
-        }
-    }
-
-  componentDidMount() {    
-    const [{ data }] = this.context;
-    const { id } = this.props.match.params;
     
-    var sampleItem = data.samples.find(e => e.id == id)
-    if (!sampleItem) return;
+  setLocation = (latitude, longitude) => {
+      this.setState({ latitude, longitude });
+  }
 
+  getLocation = () => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(position => {
+        const { latitude, longitude } = position.coords
+        this.setState({ latitude, longitude });
+      });
+    } else {
+      alert("Sorry, geolocation is not available in your browser.");
+    }
+  }
+
+  componentDidMount() { 
+    const [{ data }] = this.context;
+    const { id } = this.props.match.params;    
+    var sampleItem = data.samples.find(e => e.id == id)
     this.setState(
       sampleItem
     )
   }
 
   render() {
-    let sampleItem = this.state;
+    let sampleItem = this.state;    
     return (
       <div style={{textAlign: "left", padding: "10px"}}>
         <Form>
@@ -57,9 +55,6 @@ class SampleDetail extends React.Component {
               onChange={e => {
                 let item = this.state;
                 item.name = e.target.value;
-
-                console.log(item)
-  
                 this.setState(item)
               }}/>
           </FormGroup>
@@ -70,9 +65,6 @@ class SampleDetail extends React.Component {
               onChange={e => {
                 let item = this.state;
                 item.latitude = e.target.value;
-
-                console.log(item)
-  
                 this.setState(item)
               }}/>
           </FormGroup>
@@ -83,16 +75,14 @@ class SampleDetail extends React.Component {
             onChange={e => {
               let item = this.state;
               item.longitude = e.target.value;
-
-              console.log(item)
-
               this.setState(item)
-                        }} />
-                    <Button style={{ marginTop: "5px" }} color="primary"
-            onClick={this.getLocation}>
-            Use Current Location</Button>
+            }} />
+            <Button style={{ marginTop: "5px" }}
+              onClick={this.getLocation}>
+              Use Current Location
+            </Button>
           </FormGroup>
-          <FormGroup>
+          {/*<FormGroup>
             <Label for="sampleWeather">Weather</Label>
             <Input type="select" name="sampleWeather" id="sampleWeather">
               <option>Clear day</option>
@@ -100,7 +90,7 @@ class SampleDetail extends React.Component {
               <option>Snow day</option>
               <option>Rainy day</option>
             </Input>
-          </FormGroup>
+          </FormGroup>*/}
           <FormGroup>
             <Label for="sampleTemp">Temperature</Label>
             <Input type="number" name="sampleTemp" id="sampleTemp"
@@ -108,9 +98,6 @@ class SampleDetail extends React.Component {
             onChange={e => {
               let item = this.state;
               item.temperature = e.target.value;
-
-              console.log(item)
-
               this.setState(item)
             }}/>
           </FormGroup>
@@ -121,22 +108,20 @@ class SampleDetail extends React.Component {
             onChange={e => {
               let item = this.state;
               item.observations = e.target.value;
-
-              console.log(item)
-
               this.setState(item)
             }}/>
           </FormGroup>
           <FormGroup>
           </FormGroup>
-          <Button className="btn btn-active" onClick={this.submit}>Submit</Button>
+          <Button color="primary" onClick={this.submit}>Submit</Button>
         </Form>
       </div>
     );
   }
 
   submit = (e) => {
-    console.log('submit', e)
+    SampleService.save(this.state)
+    .then(() => this.props.history.push("/samples-home"))
   }
 }
 

@@ -5,13 +5,16 @@ import logo from './logo.svg';
 import './App.css';
 import SamplesHome from './SamplesHome';
 import Navigation from './Navigation';
+import { SampleService } from './SampleService';
+
 
 const initialState = {
   user: { username: '' },
   data: { 
-    samples: [],
-    updates: []
-  }
+    samples: []
+  },
+  updates: [],
+  online: { online: window.navigator.onLine }
 };
 
 const reducer = (state, action) => {
@@ -26,6 +29,17 @@ const reducer = (state, action) => {
         return {
           ...state,
           data: { samples: action.payload }
+        };
+    case 'online':
+        return {
+          ...state,
+          online: { online: action.payload }
+        };
+    case 'save':
+        SampleService.save()
+        return {
+          ...state,
+          online: { online: action.payload }
         };
     default:
       return state;
